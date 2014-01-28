@@ -6,7 +6,7 @@ package Template::Plugin::React;
 use base qw(Template::Plugin);
 use Template::Plugin;
 
-use JSPL;
+use Template::Plugin::React::RESimple;
 use JSON;
 
 sub from_file {
@@ -32,10 +32,12 @@ sub load {
     my ($class, $context) = @_;
     my $constants = $context->config->{CONSTANTS};
 
+    my $ctx       = new Template::Plugin::React::RESimple::RESimple;
     my $prelude   = from_file $constants->{react_js};
     my $templates = $constants->{react_templates};
 
     bless {
+        ctx       => $ctx,
         prelude   => $prelude,
         templates => $templates
     }, $class;
@@ -46,10 +48,10 @@ sub render {
     my $json = to_json($data // {});
 
     my $built = from_file $self->{templates};
-    my $res = JSPL->stock_context->eval(qq|
+    my $res = $self->{ctx}->exec(qq|
 var console = {
     warn:  function(){},
-    error: say
+    error: function(){}
 };
 
 var global = {};
@@ -63,6 +65,12 @@ React.renderComponentToString($name($json), function(s) {
 });
 result;
     |);
+
+    if($res) {
+        return $self->{ctx}->output();
+    } else {
+        die $self->{ctx}->output();
+    }
 }
 
 1;
