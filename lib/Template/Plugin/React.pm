@@ -3,7 +3,7 @@ use strict;
 use warnings;
 package Template::Plugin::React;
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use base qw(Template::Plugin);
 use Template::Plugin;
@@ -32,10 +32,7 @@ sub new {
 
 sub load {
     my ($class, $context) = @_;
-    my $constants = {#$context->config->{CONSTANTS};
-        react_js => '/Users/case/Documents/ct/crowdtilt-public-site/public/js/libs/react-0.10.0.js',
-        react_templates => '/Users/case/Documents/ct/crowdtilt-public-site/public/js/react-templates.js'
-    };
+    my $constants = $context->config->{CONSTANTS};
 
     my $ctx       = new Template::Plugin::React::RESimple::RESimple;
     my $prelude   = from_file $constants->{react_js};
