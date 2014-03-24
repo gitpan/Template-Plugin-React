@@ -5,14 +5,8 @@ README.pod
 src/Makefile.PL
 src/MYMETA.json
 src/MYMETA.yml
-src/RESimple.bs
 src/RESimple.cxx
 src/RESimple.h
 src/RESimple.i
-src/RESimple.o
-src/RESimple.pm
-src/RESimple_wrap.cxx
-src/RESimple_wrap.o
-Template-Plugin-React-0.003.tar.gz
 META.yml                                 Module YAML meta-data (added by MakeMaker)
 META.json                                Module JSON meta-data (added by MakeMaker)

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 package Template::Plugin::React;
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 use base qw(Template::Plugin);
 use Template::Plugin;
@@ -32,7 +32,10 @@ sub new {
 
 sub load {
     my ($class, $context) = @_;
-    my $constants = $context->config->{CONSTANTS};
+    my $constants = {#$context->config->{CONSTANTS};
+        react_js => '/Users/case/Documents/ct/crowdtilt-public-site/public/js/libs/react-0.10.0.js',
+        react_templates => '/Users/case/Documents/ct/crowdtilt-public-site/public/js/react-templates.js'
+    };
 
     my $ctx       = new Template::Plugin::React::RESimple::RESimple;
     my $prelude   = from_file $constants->{react_js};
@@ -51,6 +54,8 @@ sub render {
 
     my $built = from_file $self->{templates};
     my $res = $self->{ctx}->exec(qq|
+(function() {
+
 var console = {
     warn:  function(){},
     error: function(){}
@@ -61,8 +66,9 @@ $self->{prelude};
 var React = global.React;
 
 $built;
-var result;
-React.renderComponentToString($name($json));
+return React.renderComponentToString($name($json));
+
+})();
     |);
 
     if($res) {
